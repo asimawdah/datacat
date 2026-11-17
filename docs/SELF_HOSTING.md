@@ -150,7 +150,7 @@ WantedBy=multi-user.target
 ```
 
 Then `sudo systemctl daemon-reload && sudo systemctl enable --now datacat`.
-Use `curl -fsS http://localhost:3000/api/healthz` as a readiness check.
+Use `/api/healthz` as a liveness check and `/api/readyz` as a readiness check. Readiness requires PostgreSQL and, when `DATACAT_STORAGE=clickhouse`, ClickHouse to respond to a query; it returns HTTP 503 while either required store is unavailable.
 
 ## 2. Configuration reference
 
@@ -348,7 +348,7 @@ Set your root logger to INFO to include INFO messages. See the
   session tokens, API keys, invite tokens and webhook credentials: encrypt them.
 - Persist PostgreSQL and release downloads. Do not rebuild database state from logs.
 - Before upgrades, back up; rebuild UI/API together, restart the DataCat service, and
-  verify `/api/healthz`. Migrations are additive; do not assume binary downgrades are safe.
+  verify `/api/healthz` and `/api/readyz`. Migrations are additive; do not assume binary downgrades are safe.
 - Retention deletes metrics, logs and spans hourly; use PostgreSQL vacuum/monitoring and
   disk alerts. Events and configuration are not currently automatically expired.
 - No cron or SMTP service is required.
