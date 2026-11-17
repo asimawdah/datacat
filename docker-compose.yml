@@ -61,7 +61,9 @@ services:
       context: .
       dockerfile: agent/Dockerfile
     restart: unless-stopped
-    depends_on: [datacat]
+    depends_on:
+      datacat:
+        condition: service_healthy
     environment:
       DATACAT_API_KEY: ${DATACAT_AGENT_API_KEY:-}
     volumes:
