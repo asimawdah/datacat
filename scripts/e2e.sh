@@ -9,8 +9,8 @@ EMAIL="${E2E_EMAIL:-ci@example.com}"
 PASS="${E2E_PASSWORD:-$(openssl rand -hex 16)}"
 LABEL="${LABEL:-e2e}"
 J='content-type: application/json'
-for _ in $(seq 1 60); do curl -fsS "$URL/api/healthz" > /dev/null 2>&1 && break; sleep 1; done
-curl -fsS "$URL/api/healthz" > /dev/null
+for _ in $(seq 1 60); do curl -fsS "$URL/api/readyz" > /dev/null 2>&1 && break; sleep 1; done
+curl -fsS "$URL/api/readyz" > /dev/null
 COOKIES=$(mktemp)
 trap 'rm -f "$COOKIES"' EXIT
 : "${DATACAT_SETUP_TOKEN:?set DATACAT_SETUP_TOKEN to the setup token of the server}"
